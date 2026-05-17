@@ -1,23 +1,42 @@
-from app import create_app, db
-from app.models import User, Driver, Vehicle, GeoFence
-from werkzeug.security import generate_password_hash
+from flask import Flask, render_template
 
-app = create_app()
+app = Flask(__name__)
 
-def seed():
-    if not User.query.filter_by(email='admin@example.com').first():
-        admin = User(name='Admin', email='admin@example.com', role='admin', password_hash=generate_password_hash('admin123'))
-        driver = Driver(name='Ramesh', phone='9876543210', license_no='DL-TS-2026-1001')
-        vehicle = Vehicle(vehicle_no='TS09AB1234', vehicle_type='School Bus', status='Active', driver=driver)
-        fence = GeoFence(name='Hyderabad Operating Zone', center_lat=17.3850, center_lng=78.4867, radius_meters=12000)
-        db.session.add_all([admin, driver, vehicle, fence])
-        db.session.commit()
+@app.route("/")
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
-@app.cli.command('init-db')
-def init_db():
-    db.drop_all(); db.create_all(); seed(); print('Database initialized')
 
-if __name__ == '__main__':
-    with app.app_context():
-        db.create_all(); seed()
+@app.route("/register")
+def register():
+    return render_template("register.html")
+
+
+@app.route("/dashboard")
+def dashboard():
+    return render_template("dashboard.html")
+
+
+@app.route("/vehicles")
+def vehicles():
+    return render_template("vehicles.html")
+
+
+@app.route("/tracking")
+def tracking():
+    return render_template("live_tracking.html")
+
+
+@app.route("/geofence")
+def geofence():
+    return render_template("geofence.html")
+
+
+@app.route("/reports")
+def reports():
+    return render_template("reports.html")
+
+
+if __name__ == "__main__":
     app.run(debug=True)
