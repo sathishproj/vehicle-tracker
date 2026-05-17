@@ -1,1 +1,162 @@
-<!doctype html><html><head><title>Register</title><link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}"></head><body><div class="container"><div class="card" style="max-width:500px;margin:auto"><h2>User Registration</h2><form method="post"><input name="name" placeholder="Name" value="Fleet Manager"><input name="email" placeholder="Email" value="manager@example.com"><input name="password" type="password" placeholder="Password" value="manager123"><select name="role"><option value="admin">Admin</option><option value="user">User</option></select><button>Submit / View</button></form></div></div></body></html>
+<!DOCTYPE html>
+<html>
+<head>
+<title>User Registration</title>
+
+<style>
+body{
+font-family:Arial;
+background:#f4f4f4;
+}
+
+.card{
+width:450px;
+margin:80px auto;
+padding:30px;
+background:white;
+border-radius:8px;
+box-shadow:0 0 10px #ddd;
+}
+
+input,select{
+width:100%;
+padding:10px;
+margin:10px 0;
+}
+
+button{
+background:#2448b8;
+color:white;
+padding:10px 25px;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+table{
+width:100%;
+margin-top:20px;
+border-collapse:collapse;
+}
+
+td,th{
+border:1px solid #ccc;
+padding:8px;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="card">
+
+<h2>User Registration</h2>
+
+<input id="name" placeholder="Name">
+
+<input id="email" placeholder="Email">
+
+<input type="password"
+id="password"
+placeholder="Password">
+
+<select id="role">
+<option>User</option>
+<option>Admin</option>
+</select>
+
+<button onclick="saveUser()">
+Submit / View
+</button>
+
+<table id="tbl">
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+</tr>
+</table>
+
+</div>
+
+
+<script>
+
+loadUsers();
+
+function saveUser(){
+
+let user={
+
+name:
+document.getElementById("name").value,
+
+email:
+document.getElementById("email").value,
+
+password:
+document.getElementById("password").value,
+
+role:
+document.getElementById("role").value
+
+};
+
+let users=
+JSON.parse(
+localStorage.getItem("users")
+)||[];
+
+users.push(user);
+
+localStorage.setItem(
+"users",
+JSON.stringify(users)
+);
+
+alert("User Saved");
+
+loadUsers();
+
+}
+
+
+function loadUsers(){
+
+let users=
+JSON.parse(
+localStorage.getItem("users")
+)||[];
+
+let html=
+`
+<tr>
+<th>Name</th>
+<th>Email</th>
+<th>Role</th>
+</tr>
+`;
+
+users.forEach(u=>{
+
+html+=`
+<tr>
+<td>${u.name}</td>
+<td>${u.email}</td>
+<td>${u.role}</td>
+</tr>
+`;
+
+});
+
+document.getElementById(
+"tbl"
+).innerHTML=html;
+
+}
+
+</script>
+
+</body>
+</html>
